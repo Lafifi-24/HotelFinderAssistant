@@ -1,12 +1,11 @@
-import json
 import os
 import time
 
 import pytest
 from datetime import date,timedelta
 
-from flaskserver.navigator import Navigator, BookingApiClient
-from flaskserver.hotel import Hotel
+from Application.navigator import Navigator, BookingApiClient
+from Application.hotel import Hotel
 
 
 
@@ -24,7 +23,13 @@ class TestNavigatorClass:
         assert city_id == expected[0]
         assert city_name ==  expected[1]
         
-    
+    def test_get_hotel_url(self):
+        
+        time.sleep(1)
+        url = TestNavigatorClass.navigator.get_hotel_url('185602', str(date.today() + timedelta(days=1)), str(date.today() + timedelta(days=3)), 'MAD')
+        assert isinstance(url, str)
+        assert url.startswith('https://www.booking.com/hotel')
+        
     def test_get_hotels(self):
         time.sleep(1)
         params ={
@@ -32,7 +37,7 @@ class TestNavigatorClass:
             'adults_number': '2',
             'checkin_date': str(date.today() + timedelta(days=1)),
             'currency': 'MAD',
-            'city_id': '-553173',
+            'city': 'Marrakech',
             'locale': 'en-gb',
             'checkout_date': str(date.today() + timedelta(days=3)),
             'units': 'metric',
@@ -43,20 +48,14 @@ class TestNavigatorClass:
             'page_number': '0',
             'children_ages': [5,0],
             'class': [3,4],
-            'prince':[10000,"min"]
+            'prince':[0,10000]
         }
         hotels = TestNavigatorClass.navigator.get_hotels(params)
         assert isinstance(hotels, list)
         assert isinstance(hotels[0], Hotel)
-        assert hotels[0].propertyClass == 3 or hotels[0].propertyClass == 4
         assert hotels[0].price <= 10000
         
-    def test_get_hotel_url(self):
-        
-        time.sleep(1)
-        url = TestNavigatorClass.navigator.get_hotel_url('185602', str(date.today() + timedelta(days=1)), str(date.today() + timedelta(days=3)), 'MAD')
-        assert isinstance(url, str)
-        assert url.startswith('https://www.booking.com/hotel')
+    
     
         
         

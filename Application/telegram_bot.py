@@ -1,5 +1,4 @@
 from telebot import types, TeleBot
-from telebot.types import InputFile
 
 class TelegramBot:
     
@@ -44,7 +43,7 @@ class TelegramBot:
         
         self.bot.send_message(chat_id, message, reply_markup=markup)
         
-    def send_photo(self, chat_id, photo_url, caption):
+    def send_photo(self, chat_id, photo_url, caption, markup=None):
         '''
         This method is used to send a photo to a user.
         
@@ -54,7 +53,7 @@ class TelegramBot:
             caption (str): caption to be sent with the photo.
         '''
         
-        self.bot.send_photo(chat_id, photo=photo_url, caption=caption, parse_mode='Markdown')
+        self.bot.send_photo(chat_id, photo=photo_url, caption=caption, parse_mode='Markdown', reply_markup=markup)
         
     
     

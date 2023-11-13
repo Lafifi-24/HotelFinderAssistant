@@ -1,8 +1,8 @@
 import os
 import pytest
 
-from flaskserver.chatbot_manager import ChatbotManager
-from flaskserver.chatbot_manager import ClientChatSession
+from Application.chatbot_manager import ChatbotManager
+from Application.chatbot_manager import ClientChatSession
 from langchain.prompts import (
     ChatPromptTemplate,
     MessagesPlaceholder,
@@ -11,6 +11,7 @@ from langchain.prompts import (
 )
 from langchain.chains import LLMChain
 from langchain.chat_models import ChatOpenAI
+
 OPENAI_API_key=os.getenv('OPENAI_API_key')
 llm = ChatOpenAI(openai_api_key = OPENAI_API_key)
     

@@ -1,4 +1,4 @@
-from flaskserver.config import Config
+from Application.config import Config
 
 
 

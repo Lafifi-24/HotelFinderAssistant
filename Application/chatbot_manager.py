@@ -48,10 +48,10 @@ class ChatbotManager:
             messages=[
                 SystemMessagePromptTemplate.from_template(
                     "You are a hotel finder assistant system. Your task is to communicate with customers and build a summary of the user's information.\
-                    You should gather details such as city, country, check-in, check-out, number of persons, number of children and their ages ,price preferences and desired hotel class. \
+                    You should gather this details ->  city, country, check-in, check-out, number of persons,number of rooms, number of children and their ages ,price preferences and desired hotel class. \
                     Avoid unrelated questions, and each question will be asked only once.\
                     Avoid any answer unrelated to your tasks.\
-                    As you gather the information make your message starts with '##Summary:' followed by the collected user information"
+                    Add to your message ('##Summary':information that you collect)  every time you want to do a search for hotels. "
                 ),
                 MessagesPlaceholder(variable_name="chat_history"),
                 HumanMessagePromptTemplate.from_template("{human_message}"),
@@ -78,8 +78,8 @@ class ChatbotManager:
                     city: string\
                     country:string , you can deducated from city\
                     checkout_date: YYYY-MM-DD \
-                    room_number: number\
-                    children_number: number\
+                    room_number: number by default is 1\
+                    children_number: number by default is 0\
                     children_ages: array have numbers such as [2,3]\
                     price: [A,B] follows this logic [140,190], or [150,'min'] or '150,'max'] \
                     class: [list of stars(int)]"

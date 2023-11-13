@@ -1,7 +1,9 @@
 
 ## this file is for testing the telegram bot, is not automatic test, you should run it and test the bot manually
 ## you should run the flask server first, then run this file
-
+import os
+import sys
+sys.path.insert(0, os.getcwd())
 
 
 from telebot import types
@@ -9,8 +11,8 @@ from flask import Flask, request
 
 
 
-from flaskserver.telegram_bot import TelegramBot
-from flaskserver.config import Config
+from Application.telegram_bot import TelegramBot
+from Application.config import Config
 
 app = Flask(__name__)
 config = Config()

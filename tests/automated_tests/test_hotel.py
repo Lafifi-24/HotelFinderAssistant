@@ -1,4 +1,4 @@
-from flaskserver.hotel import Hotel
+from Application.hotel import Hotel
 
 class TestHotelClass:
     

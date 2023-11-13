@@ -2,7 +2,7 @@ import re
 
 import requests
 
-from flaskserver.hotel import Hotel
+from Application.hotel import Hotel
 
 
 class BookingApiClient:
@@ -15,7 +15,7 @@ class BookingApiClient:
             "X-RapidAPI-Host": "booking-com.p.rapidapi.com"
         }
         response = requests.get(url, headers=headers, params=params)
-        response.raise_for_status()
+
         return response.json()
     
     
@@ -44,8 +44,22 @@ class Navigator:
         querystring = {"hotel_id":hotel_id,"currency":currency,"locale":"en-gb","checkout_date":checkout,"checkin_date":checkin}
 
         answer = self.booking_api.make_api_request(url, querystring)
+    
         
         return answer['url']
+    
+    def build_url_with_params(self, url, params):
+        keys = ['checkin_date', 'checkout_date', 'adults_number', 'children_number','age', 'room_number', 'currency']
+        url += '?'
+        
+        for key in keys:
+            if key == 'age':
+                for element in params['children_ages']:
+                    url += f'&{key}={element}'
+            else:
+                url += f'&{key}={params[key]}'  
+        return url
+        
     
     def build_query_params_for_hotels_search(self, params):
         
@@ -61,30 +75,34 @@ class Navigator:
             'room_number': params['room_number'],
             'dest_type': 'city',
             'include_adjacency': 'true',
-            'children_number': params['children_number'],
             'page_number': '0',
-            'children_ages': ','.join([str(element) for element in params['children_ages']]),
+
             'categories_filter_ids': 'free_cancellation::1'}
+        
+        if 'children_ages' in params:
+            if len(params['children_ages']) > 0:
+                querystring['children_ages'] =','.join([str(age) for age in params['children_ages']])
+        if 'children_number' in params:
+            if int(params['children_number']) > 1:
+               querystring['children_number'] = params["children_number"]
         
         if 'class' in params:
             for _class in params['class']:
                 querystring['categories_filter_ids'] += f',class::{_class}'
         if 'price' in params:
-            querystring['categories_filter_ids'] += f',price::{params["querystring"]}-{params["price"][0]}-{params["price"][1]}'
+            if len(params['price']) > 1:
+                querystring['categories_filter_ids'] += f',price::{params["currency"]}-{params["price"][0]}-{params["price"][1]}'
             
         return querystring
     
     
     def get_hotels(self, params):
-        
-        
-        
         url = "https://booking-com.p.rapidapi.com/v2/hotels/search"
         
         if params['city'] not in self.cities:
             city_id, city_name = self.get_city_code(params['city'])
             if city_id == '0':
-                raise ValueError(f'City {params["city"]} not found')
+                return []
             if city_name != params['city']:
                 self.cities[city_name] = city_id # to avoid duplicates for small faults in the city name
             self.cities[params['city']] = city_id
