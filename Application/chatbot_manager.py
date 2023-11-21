@@ -12,13 +12,13 @@ from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 
 class ClientChatSession:
-    def __init__(self, chatid, model, prompt):
+    def __init__(self, chatid, model, prompt, history=None):
         self.timestamp_of_last_message = None
         self.timestamp_of_creation = time.time()
         self.timestamp_of_last_message = time.time()
         self.chatid = chatid
         
-        memory = ConversationBufferMemory(memory_key="chat_history",return_messages=True)
+        memory = ConversationBufferMemory(memory_key="chat_history",return_messages=True, history=history, max_history_length=20)
         self.chatbot = LLMChain(llm=model, prompt=prompt, memory=memory, verbose=False)
         
     def demand_response(self, message):
@@ -89,7 +89,7 @@ class ChatbotManager:
         )
         self.json_builder_bot = LLMChain(llm=llm_json_builder_bot, prompt=prompt_json_builder)
         
-    def get_or_create_session(self, chatid):
+    def get_or_create_session(self, chatid, history=None):
         is_new_session = False
         if chatid not in self.client_chat_sessions.keys():
             self.client_chat_sessions[chatid] = ClientChatSession(chatid, self.llm_interface_bot, self.prompt_interface_bot)

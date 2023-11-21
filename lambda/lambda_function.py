@@ -1,6 +1,6 @@
+
 import json
 
-from flask import Flask,request
 from telebot import types
 
 from Application.config import Config
@@ -8,11 +8,9 @@ from Application.navigator import Navigator , BookingApiClient
 from Application.chatbot_manager import ChatbotManager
 from Application.telegram_bot import TelegramBot
 
-app = Flask(__name__)
+config = Config(ngrok=False)
 
-config = Config(ngrok=True)
-
-telegram_bot = TelegramBot(bot_token=config.TELEGRAM_API_KEY,webhook_url=config.WEBHOOK_URL)
+telegram_bot = TelegramBot(bot_token=config.TELEGRAM_API_KEY)
 bots_manager = ChatbotManager(openai_api_key=config.OPENAI_API_KEY)
 json_builder = bots_manager.get_json_builder()
 
@@ -20,11 +18,9 @@ json_builder = bots_manager.get_json_builder()
 booking_api_client = BookingApiClient(api_token=config.BOOKING_API_KEY)
 navigator = Navigator(booking_api_client)
 client_preferences_storage = {}
-  
-@app.route("/",methods=["POST","GET"])
-def webhook():
-    
-    text, chat_id, user_name, is_callback_query = telegram_bot.get_info_from_response(request.stream.read().decode('utf-8'))
+
+def handler(event, context):
+    text, chat_id, user_name, is_callback_query = telegram_bot.get_info_from_response(json.loads(event['body']))
     chat_session, is_new_session = bots_manager.get_or_create_session(chat_id)
     if is_new_session:
         telegram_bot.send_message(chat_id, "A new session is starting now.")
@@ -70,11 +66,8 @@ def webhook():
                 
             else:
                 telegram_bot.send_message(chat_id, chat_session.demand_response(text))
-        
     
-    return 'ok', 200
-
-    
-    
-if __name__ == "__main__":
-    app.run(debug=True)
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Success')
+        }

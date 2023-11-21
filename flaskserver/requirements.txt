@@ -1,0 +1,6 @@
+Flask==3.0.0
+langchain==0.0.314
+pytest==7.4.3
+openai==0.28.1
+pyTelegramBotAPI==4.14.0
+pyngrok==7.0.0

@@ -2,9 +2,10 @@ from telebot import types, TeleBot
 
 class TelegramBot:
     
-    def __init__(self, bot_token, webhook_url):
-        self.bot = TeleBot(token = bot_token) 
-        self.bot.set_webhook(url=webhook_url)
+    def __init__(self, bot_token, webhook_url=None):
+        self.bot = TeleBot(token = bot_token)
+        if webhook_url!=None: 
+            self.bot.set_webhook(url=webhook_url)
         
     
     def get_info_from_response(self, json_response):
@@ -21,7 +22,7 @@ class TelegramBot:
             (bool): True if the message is a callback query, False otherwise.
         '''
         
-        update = types.Update.de_json(json_response.decode('utf-8'))
+        update = types.Update.de_json(json_response)
         
         if update.message:
             message = update.message
