@@ -12,13 +12,15 @@ from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 
 class ClientChatSession:
-    def __init__(self, chatid, model, prompt, history=None):
+    def __init__(self, chatid, model, prompt, chat_memory=None):
         self.timestamp_of_last_message = None
         self.timestamp_of_creation = time.time()
         self.timestamp_of_last_message = time.time()
         self.chatid = chatid
-        
-        memory = ConversationBufferMemory(memory_key="chat_history",return_messages=True, history=history, max_history_length=20)
+        if chat_memory is None:
+            memory = ConversationBufferMemory(memory_key="chat_history",return_messages=True, max_history_length=20)
+        else: 
+            memory = ConversationBufferMemory(memory_key="chat_history",return_messages=True, chat_memory=chat_memory, max_history_length=20)
         self.chatbot = LLMChain(llm=model, prompt=prompt, memory=memory, verbose=False)
         
     def demand_response(self, message):
@@ -91,13 +93,17 @@ class ChatbotManager:
         
     def get_or_create_session(self, chatid, history=None):
         is_new_session = False
-        if chatid not in self.client_chat_sessions.keys():
-            self.client_chat_sessions[chatid] = ClientChatSession(chatid, self.llm_interface_bot, self.prompt_interface_bot)
-            is_new_session = True
-        elif time.time() - self.client_chat_sessions[chatid].timestamp_of_last_message > 60*60*24 or self.client_chat_sessions[chatid].timestamp_of_last_message - self.client_chat_sessions[chatid].timestamp_of_creation > 60*60*24:
-            del self.client_chat_sessions[chatid]
-            is_new_session = True
-            self.client_chat_sessions[chatid] = ClientChatSession(chatid, self.llm_interface_bot, self.prompt_interface_bot)
+        if history is None:
+            if chatid not in self.client_chat_sessions.keys():
+                self.client_chat_sessions[chatid] = ClientChatSession(chatid, self.llm_interface_bot, self.prompt_interface_bot)
+                is_new_session = True
+            elif time.time() - self.client_chat_sessions[chatid].timestamp_of_last_message > 60*60*24 or self.client_chat_sessions[chatid].timestamp_of_last_message - self.client_chat_sessions[chatid].timestamp_of_creation > 60*60*24:
+                del self.client_chat_sessions[chatid]
+                is_new_session = True
+                self.client_chat_sessions[chatid] = ClientChatSession(chatid, self.llm_interface_bot, self.prompt_interface_bot)
+        else:
+            self.client_chat_sessions[chatid] = ClientChatSession(chatid, self.llm_interface_bot, self.prompt_interface_bot, chat_memory=history[0])
+            is_new_session = history[1]
         return self.client_chat_sessions[chatid], is_new_session
     
     def delete_session(self, chatid):
