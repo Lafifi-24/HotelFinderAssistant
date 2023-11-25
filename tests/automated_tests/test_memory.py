@@ -11,7 +11,17 @@ class MemoryTest():
         
         dynamodb = boto3.resource("dynamodb")
         
-
-        assert memory.SessionTable_name in dynamodb.list_tables()["TableNames"]:
+        assert memory.SessionTable_name in dynamodb.list_tables()["TableNames"]
+        
+        table = dynamodb.Table(memory.SessionTable_name)
+        table.delete()
+        table.wait_until_not_exists()
+        
+    def test_create_session(self):
+        memory = Memory(memory_type="DynamoDB")
+        
+        history = memory.create_session(1233)
+        history.add_ai_message("Hello")
+        
         
     

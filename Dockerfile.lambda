@@ -9,7 +9,7 @@ RUN pip install -r requirements.txt
 
 COPY lambda/lambda_function.py ${LAMBDA_TASK_ROOT}
 COPY Application/ ${LAMBDA_TASK_ROOT}/Application
-COPY api_keys.sh ${LAMBDA_TASK_ROOT}/api_keys.sh
+
 
 ARG OPENAI_API_key
 ENV OPENAI_API_key=$OPENAI_API_key
