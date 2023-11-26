@@ -23,7 +23,7 @@ client_preferences_storage = {}
 def handler(event, context):
     text, chat_id, user_name, is_callback_query = telegram_bot.get_info_from_response(json.loads(event['body']))
     chat_history = memory.load_history_from_dynamodb(str(chat_id))
-    chat_session, is_new_session = bots_manager.get_or_create_session(chat_id, chat_history=chat_history)
+    chat_session, is_new_session = bots_manager.get_or_create_session(chat_id,  history=chat_history)
     if is_new_session:
         telegram_bot.send_message(chat_id, "A new session is starting now.")
         chat_session.add_in_bot_memory("Hello {}, I am your hotel finder assistant. How can I help you?".format(user_name))
@@ -69,7 +69,7 @@ def handler(event, context):
             else:
                 telegram_bot.send_message(chat_id, chat_session.demand_response(text))
                 
-    memory.save_history_to_dynamodb(chat_session.chatbot, str(chat_id)) 
+    memory.save_history_in_dynamodb(chat_session.chatbot, str(chat_id)) 
     
     return {
         'statusCode': 200,

@@ -1,17 +1,20 @@
 ### Run the app
-you can use two ways to run this app:
-- first one is to use the version based on falsk server by :
+- First step create your telegram Bot
+- Second Create the backend:
+    - falsk server :
 
-    - Fill api_keys.sh with your APIs tokens
-    - Build docker image `docker build --no-cache -f Dockerfile.flask -t BookingMate .`
-    - Run the docker image `docker run -p  5000:5000 BookingMate`
-    - Congrats! 
-- second one is to use lambda version:
-    - Fill api_keys.sh with your APIs tokens
-    - Build docker image `docker build --build-arg OPENAI_API_key=$OPENAI_API_key TELEGRAM_API_key=$TELEGRAM_API_key BOOKING_API_key=$BOOKING_API_key --no-cache -f Dockerfile.lambda -t BookingMate .`
-    - follow instructions in deployment part from aws documentation https://docs.aws.amazon.com/lambda/latest/dg/python-image.html
-    - Create lambda function using docker image , follow instruction from step 4 : https://medium.com/the-resultid-blog/setting-up-a-lambda-function-with-a-docker-image-d29f3611e0c6#:~:text=Setting%20Up%20a%20Lambda%20Function%20With%20a%20Docker,...%206%20Step%206%3A%20Let%E2%80%99s%20test%20it%20out%E2%80%A6
-    - https://api.telegram.org/bot<Bot_token>/setWebhook?url=<API_GateWay_link>
+        - Fill api_keys.sh with your APIs tokens
+        - Build docker image `docker build --no-cache -f Dockerfile.flask -t BookingMate .`
+        - Run the docker image `docker run -p  5000:5000 BookingMate`
+        - Congrats! 
+    - aws lambda serverless:
+        - Build docker image `docker build --no-cache -f Dockerfile.lambda -t BookingMate .`
+        - follow instructions in deployment part from [aws documentation](https://docs.aws.amazon.com/lambda/latest/dg/python-image.html) 
+        - Create lambda function using docker image 
+        - Add AmazonDynamoDBFullAccess policy to the role.
+        - Add Environment variables from api_keys with your tokens
+        - Change Memory=1024 MB and Timeout = 1 min 
+        - Open this link in your browser `https://api.telegram.org/bot<Bot_token>/setWebhook?url=<API_GateWay_link>`, be sur that you get the message "webhook was set"
 
 
 
