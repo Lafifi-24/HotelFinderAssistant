@@ -53,7 +53,7 @@ class ChatbotManager:
                     You should gather this details ->  city, country, check-in, check-out, number of persons,number of rooms, number of children and their ages ,price preferences and desired hotel class. \
                     Avoid unrelated questions, and each question will be asked only once.\
                     Avoid any answer unrelated to your tasks.\
-                    Add to your message ('##Summary':information that you collect)  every time you want to do a search for hotels. "
+                    Add to your message ( this '##Summary':information that you collect ) every time you want to do a search for hotels . "
                 ),
                 MessagesPlaceholder(variable_name="chat_history"),
                 HumanMessagePromptTemplate.from_template("{human_message}"),

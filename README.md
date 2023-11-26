@@ -1,3 +1,14 @@
+# Introduction
+This project is a chatbot assistant on Telegram using OpenAI API and langchain. It collects information from users to suggest hotels based on their preferences.
+## Application schema
+There are two versions. In the first one, I used a Flask server. In the second one, I deployed the bot using AWS Lambda, AWS ECR, and AWS DynamoDB.
+### First version
+
+### Second version
+
+## Demonstration
+In the video, you will notice the chatbot starting by welcoming the user with their Telegram username.Then it begins to ask about user preferences, such as city, check-in, and checkout... . Once it has collected the required information, the system will utilize the Booking API to present hotel options.
+
 ### Run the app
 - First step create your telegram Bot
 - Second Create the backend:

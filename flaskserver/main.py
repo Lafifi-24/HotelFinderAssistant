@@ -50,7 +50,7 @@ def webhook():
                 chat_session.add_in_bot_memory("I will now proceed with searching for suitable hotels based on your preferences. Please give me a moment.")
                 telegram_bot.send_message(chat_id, "I will now proceed with searching for suitable hotels based on your preferences. Please give me a moment.")
                 json_builder_response = json_builder({"summary":response[response.find('#'):]})['text']
-                Json = json.loads(json_builder_response[json_builder_response.find('{'):json_builder_response.find('}')+1])
+                Json = json.loads(str(json_builder_response[json_builder_response.find('{'):json_builder_response.find('}')+1]))
                 hotels = navigator.get_hotels(Json)
                 
                 for i, hotel in enumerate(hotels):

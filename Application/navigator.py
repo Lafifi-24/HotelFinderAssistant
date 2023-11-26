@@ -54,8 +54,9 @@ class Navigator:
         
         for key in keys:
             if key == 'age':
-                for element in params['children_ages']:
-                    url += f'&{key}={element}'
+                if 'children_ages' in params:
+                    for element in params['children_ages']:
+                        url += f'&{key}={element}'
             else:
                 url += f'&{key}={params[key]}'  
         return url
