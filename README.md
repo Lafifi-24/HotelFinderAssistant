@@ -3,11 +3,13 @@ This project is a chatbot assistant on Telegram using OpenAI API and langchain. 
 ## Application schema
 There are two versions. In the first one, I used a Flask server. In the second one, I deployed the bot using AWS Lambda, AWS ECR, and AWS DynamoDB.
 ### First version
-
+![Alt text](./schema/flaskserver.drawio%20(1).png?raw=true)
 ### Second version
-
+![Alt text](./schema/lambda.drawio.png?raw=true)
 ## Demonstration
 In the video, you will notice the chatbot starting by welcoming the user with their Telegram username.Then it begins to ask about user preferences, such as city, check-in, and checkout... . Once it has collected the required information, the system will utilize the Booking API to present hotel options.
+
+
 
 ### Run the app
 - First step create your telegram Bot
@@ -30,17 +32,16 @@ In the video, you will notice the chatbot starting by welcoming the user with th
 
 
 ### Tests
-After installing requirments and fill and execute api_keys.sh, you can try to excute this tests from tests folder.\
+After installing requirments and fill and execute api_keys.sh, you can try to excute this tests from tests folder.
 
-    - automated tests:\
-        contains tests created using pytest to ensure each component from the application works as expected \
+    - automated tests:
+        contains tests created using pytest to ensure each component from the application works as expected 
         To run it : `python -W ignore -m pytest tests/automated_tests/`
 
-    - manual tests :\
-    it has two files :
-        - test_chatbot_manager : is a test for the bots perfomence with different scenarios, it helps to improve the prompt for Bots \
+    - manual tests : it has two files 
+        - test_chatbot_manager : is a test for the bots perfomence with different scenarios, it helps to improve the prompt for Bots 
         to run it : `python -W ignore tests/manual_tests/test_chatbot_manager.py`
-        - test_telegram_bot : is a test for TelegramBot class if it has the ability to interact with user side \
+        - test_telegram_bot : is a test for TelegramBot class if it has the ability to interact with user side 
         to use it : 
             - first : execute `python tests/manual_tests/test_telegram_bot.py`
             - second :  use telegram account to communicate with your bot
