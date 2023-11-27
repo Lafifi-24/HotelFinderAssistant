@@ -11,7 +11,8 @@ In the video, you will notice the chatbot starting by welcoming the user with th
 
 
 
-https://github.com/Lafifi-24/HotelFinderAssistant/assets/71573277/cc3adebb-9bd6-488b-ac47-f7c9301ea147
+https://github.com/Lafifi-24/HotelFinderAssistant/assets/71573277/adef7c81-2e54-4343-b10c-45b962490893
+
 
 
 
