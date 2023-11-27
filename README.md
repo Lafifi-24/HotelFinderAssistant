@@ -11,6 +11,10 @@ In the video, you will notice the chatbot starting by welcoming the user with th
 
 
 
+https://github.com/Lafifi-24/HotelFinderAssistant/assets/71573277/cc3adebb-9bd6-488b-ac47-f7c9301ea147
+
+
+
 ### Run the app
 - First step create your telegram Bot
 - Second Create the backend:
