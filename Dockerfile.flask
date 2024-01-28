@@ -8,14 +8,12 @@ RUN pip install -r /requirements.txt
 
 COPY flaskserver/ /
 COPY Application/ /Application
-COPY api_keys.sh /api_keys.sh
-
-RUN chmod +x /api_keys.sh
+COPY .env /.env
 
 ENV FLASK_APP /main.py
 ENV FLASK_RUN_HOST 0.0.0.0
 EXPOSE 5000
 
 
-CMD . ./api_keys.sh && flask run
+CMD flask run
 
